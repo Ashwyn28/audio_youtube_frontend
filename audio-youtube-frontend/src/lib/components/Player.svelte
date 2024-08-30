@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
   
+    export let videoId = '';
     let player;
     let playing = false;
     let updateTimer;
@@ -96,7 +97,7 @@
     <div class="video-container">
       <iframe
         id="youtube-video"
-        src="https://www.youtube.com/embed/qf7ws2DF-zk?controls=0&enablejsapi=1"
+        src="https://www.youtube.com/embed/${videoId}?controls=0&enablejsapi=1"
         style="display: none;"
         title="YouTube video player"
         frameborder="0"
