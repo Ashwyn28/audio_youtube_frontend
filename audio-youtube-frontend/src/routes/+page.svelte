@@ -4,11 +4,14 @@
   import { onMount } from "svelte";
 
   $: videoIds = [];
+  let searchQuery = "";
 
-  const handleSearch = async (q) => {
-    const res = await search("mkbhd");
-    if (res) {
-      videoIds = res.videos;
+  const handleSearch = async () => {
+    if (searchQuery) {
+      const res = await search(searchQuery);
+      if (res) {
+        videoIds = res.videos;
+      }
     }
   };
 
@@ -17,11 +20,19 @@
   });
 </script>
 
-<label class="input input-bordered flex items-center gap-2">
-  <input type="text" class="grow" placeholder="Search" />
-  <kbd class="kbd kbd-sm">⌘</kbd>
-  <kbd class="kbd kbd-sm">K</kbd>
-</label>
+<div class="flex">
+  <label class="flex-1 input input-bordered flex items-center gap-2">
+    <input
+      type="text"
+      class="grow"
+      placeholder="Search"
+      bind:value={searchQuery}
+    />
+    <kbd class="kbd kbd-sm">⌘</kbd>
+    <kbd class="kbd kbd-sm">K</kbd>
+  </label>
+  <button on:click={handleSearch} class="btn btn-neutral">Search</button>
+</div>
 
 {#if videoIds}
   {#each videoIds as videoId}
