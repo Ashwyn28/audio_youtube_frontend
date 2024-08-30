@@ -20,16 +20,14 @@
   });
 </script>
 
-<div class="flex">
-  <label class="flex-1 input input-bordered flex items-center gap-2">
+<div class="flex pb-8">
+  <label class="flex-1 input input-bordered flex items-center gap-2 mr-2">
     <input
       type="text"
       class="grow"
       placeholder="Search"
       bind:value={searchQuery}
     />
-    <kbd class="kbd kbd-sm">⌘</kbd>
-    <kbd class="kbd kbd-sm">K</kbd>
   </label>
   <button on:click={handleSearch} class="btn btn-neutral">Search</button>
 </div>

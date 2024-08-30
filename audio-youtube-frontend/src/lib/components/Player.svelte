@@ -93,11 +93,11 @@
     }
   </style>
   
-  <div>
+  <div class="pb-4">
     <div class="video-container">
       <iframe
         id="youtube-video"
-        src="https://www.youtube.com/embed/${videoId}?controls=0&enablejsapi=1"
+        src="https://www.youtube.com/embed/{videoId}?controls=0&enablejsapi=1"
         style="display: none;"
         title="YouTube video player"
         frameborder="0"
@@ -107,18 +107,19 @@
       ></iframe>
     </div>
     <div class="flex">
-      <div class="flex-none">
-        <button class="play-pause-btn" on:click={togglePlayPause}>
+      <div class="flex-1">
+        <button class="btn btn-neutral" on:click={togglePlayPause}>
           {playing ? 'Pause' : 'Play'}
         </button>
       </div>
-      <div class="ml-1 flex-1" id="time-display">
+      <div class="ml-1 flex-none content-center" id="time-display">
         {formatTime(currentTime)} / {formatTime(duration)}
       </div>
     </div>
-    <div
+    <progress class="progress w-full" value={duration > 0 ? (currentTime / duration) * 100 : '0'} max="100"></progress>
+    <!-- <div
       id="progress-bar"
       style="width: {duration > 0 ? (currentTime / duration) * 100 + '%' : '0%'}"
-    ></div>
+    ></div> -->
   </div>
   

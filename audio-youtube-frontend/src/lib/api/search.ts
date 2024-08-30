@@ -2,11 +2,6 @@ import type { EndpointOutput } from "@sveltejs/kit";
 
 const BASE = "http://localhost:8000";
 
-/**
- * create generic get fetch call
- * @param {string} resource
- * @returns {Promise<EndpointOutput>}
- */
 export const get = async (resource: string): Promise<EndpointOutput> => {
   try {
     const res = await fetch(`${BASE}/${resource}`, {
