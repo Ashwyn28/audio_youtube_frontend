@@ -1,39 +1,15 @@
 <script>
   import Player from "$lib/components/Player.svelte";
-  import { search } from "$lib/api/search";
-  import { onMount } from "svelte";
+  import SearchBar from "$lib/components/SearchBar.svelte";
+  import { videos } from "$lib/store";
 
-  $: videoIds = [];
-  let searchQuery = "";
-
-  const handleSearch = async () => {
-    if (searchQuery) {
-      const res = await search(searchQuery);
-      if (res) {
-        videoIds = res.videos;
-      }
-    }
-  };
-
-  onMount(async () => {
-    await handleSearch();
-  });
+  // make a little store here
 </script>
 
-<div class="flex pb-8">
-  <label class="flex-1 input input-bordered flex items-center gap-2 mr-2">
-    <input
-      type="text"
-      class="grow"
-      placeholder="Search"
-      bind:value={searchQuery}
-    />
-  </label>
-  <button on:click={handleSearch} class="btn btn-neutral">Search</button>
-</div>
+<SearchBar />
 
-{#if videoIds}
-  {#each videoIds as videoId}
-    <Player {videoId} />
+{#if $videos}
+  {#each $videos as video}
+    <Player videoId={video.id} videoTitle={video.title} />
   {/each}
 {/if}

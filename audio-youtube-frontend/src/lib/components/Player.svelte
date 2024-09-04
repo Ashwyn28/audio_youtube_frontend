@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
   
     export let videoId = '';
+    export let videoTitle = '';
     let player;
     let playing = false;
     let updateTimer;
@@ -117,6 +118,7 @@
       </div>
     </div>
     <progress class="progress w-full" value={duration > 0 ? (currentTime / duration) * 100 : '0'} max="100"></progress>
+    <p>{videoTitle}</p>
     <!-- <div
       id="progress-bar"
       style="width: {duration > 0 ? (currentTime / duration) * 100 + '%' : '0%'}"
