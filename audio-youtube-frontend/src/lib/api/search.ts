@@ -39,9 +39,18 @@ export const post = async (
 
 export const search = async (q: string): Promise<EndpointOutput> => {
   try {
-    const res = await get(`youtube_search?query=${q}`);
+    const res = await get(`search?query=${q}`);
     return res;
   } catch (error) {
     console.log(error);
   }
 };
+
+export const searchChannelLatest = async (q: [string]): Promise<EndpointOutput> => {
+  try {
+    const res = await post('/channels/latests', q);
+    return res;
+  } catch (error) {
+    console.log(error)
+  }
+}

@@ -2,8 +2,6 @@
   import Player from "$lib/components/Player.svelte";
   import SearchBar from "$lib/components/SearchBar.svelte";
   import { videos } from "$lib/store";
-
-  // make a little store here
 </script>
 
 <SearchBar />
