@@ -19,7 +19,7 @@
   });
 </script>
 
-<div class="flex pb-8">
+<div class="absolute bottom-0 text-center left-1/2 transform -translate-x-1/2 flex pb-8 w-[80%]">
   <label class="flex-1 input input-bordered flex items-center gap-2 mr-2">
     <input
       type="text"
