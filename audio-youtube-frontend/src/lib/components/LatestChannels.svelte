@@ -1,25 +1,11 @@
-<script lang="ts">
-    import { onMount } from "svelte";
+<script>
     import Player from "./Player.svelte";
-    import { searchChannelLatest } from "$lib/api/search";
-    import type { Writable } from "svelte/store";
-
-    export let channels: [string] = [''];
-    export let store: Writable<any>;
-
-    onMount(async () => {
-        if (channels) {
-            const res = await searchChannelLatest(channels);
-            if (res) {
-                store.set(res);
-            }
-        }
-    });
+    export let videos;
 </script>
 
 <div>
-    {#if $store}
-        {#each $store as video}
+    {#if videos}
+        {#each videos as video}
             <Player videoId={video.id} videoTitle={video.title} />
         {/each}
     {/if}

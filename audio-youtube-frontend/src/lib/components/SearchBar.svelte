@@ -1,16 +1,12 @@
 <script>
-  import { search } from "$lib/api/search";
   import { onMount } from "svelte";
-  import { videos } from "$lib/store";
+  import { videoStore } from "$lib/store";
 
   let searchQuery = "";
 
   const handleSearch = async () => {
     if (searchQuery) {
-      const res = await search(searchQuery);
-      if (res) {
-        videos.set(res);
-      }
+      await videoStore.searchVideos(searchQuery);
     }
   };
 
