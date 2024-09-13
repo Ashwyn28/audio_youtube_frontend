@@ -22,7 +22,7 @@ export const post = async (
   data: any
 ): Promise<EndpointOutput> => {
   try {
-    const res = await fetch(resource, {
+    const res = await fetch(`${BASE}/${resource}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -48,7 +48,7 @@ export const search = async (q: string): Promise<EndpointOutput> => {
 
 export const searchChannelLatest = async (q: string[]): Promise<EndpointOutput> => {
   try {
-    const res = await post('/channels/latests', q);
+    const res = await post('channels/latest', q);
     return res;
   } catch (error) {
     console.log(error)
