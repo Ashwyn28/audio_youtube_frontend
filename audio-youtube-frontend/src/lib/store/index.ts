@@ -28,4 +28,4 @@ export function createVideoStore(withPersistentStorage: boolean) {
   };
 }
 
-export const videoStore = createVideoStore(false);
+export const videoStore = createVideoStore(true);

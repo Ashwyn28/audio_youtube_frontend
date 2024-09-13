@@ -1,5 +1,5 @@
 import type { Writable } from 'svelte/store';
-import { search, searchChannelLatest } from '$lib/api/search';
+import { search, searchChannelLatest } from '$lib/services/search';
 import type { Video, Category } from '$lib/types';
 
 export class VideoHandler {
