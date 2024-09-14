@@ -7,7 +7,7 @@
 
   $: videos = $videoStore.tech;
 
-  videoStore.fetchVideos(channels, category);
+  videoStore.searchChannels(channels, category);
 </script>
 
 {#if videos.length === 0}

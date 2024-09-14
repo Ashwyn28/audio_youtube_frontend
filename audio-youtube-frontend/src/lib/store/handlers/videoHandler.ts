@@ -1,5 +1,5 @@
 import type { Writable } from 'svelte/store';
-import { search, searchChannelLatest } from '$lib/services/search';
+import { search, searchChannelsLatest } from '$lib/services/search';
 import type { Video, Category } from '$lib/types';
 
 export class VideoHandler {
@@ -9,8 +9,8 @@ export class VideoHandler {
     this.update = update;
   }
 
-  async fetchVideos(channels: string[], category: string): Promise<void> {
-    const res: Video[] = await searchChannelLatest(channels);
+  async searchChannels(channels: string[], category: string): Promise<void> {
+    const res: Video[] = await searchChannelsLatest(channels);
     if (res) {
       this.update((state) => {
         state[category] = res;
@@ -27,6 +27,10 @@ export class VideoHandler {
         return state;
       });
     }
+  }
+
+  async searchChannel(channel: string): Promise<void> {
+    const res: Video[] = await search(query);
   }
 
   clearVideos(category: Category): void {

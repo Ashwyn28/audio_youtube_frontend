@@ -20,12 +20,13 @@ export function createVideoStore(withPersistentStorage: boolean) {
     subscribe,
     set,
     update,
-    fetchVideos: (channels: string[], category: string) =>
-      videoHandler.fetchVideos(channels, category),
+    searchChannels: (channels: string[], category: string) =>
+      videoHandler.searchChannels(channels, category),
     searchVideos: (query: string) => videoHandler.searchVideos(query),
+    searchChannel: (channel: string) => videoHandler.searchChannel(channel),
     clearVideos: (category: string) => videoHandler.clearVideos(category),
     reset: () => videoHandler.reset(),
   };
 }
 
-export const videoStore = createVideoStore(true);
+export const videoStore = createVideoStore(false);

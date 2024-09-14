@@ -46,7 +46,7 @@ export const search = async (q: string): Promise<EndpointOutput> => {
   }
 };
 
-export const searchChannelLatest = async (q: string[]): Promise<EndpointOutput> => {
+export const searchChannelsLatest = async (q: string[]): Promise<EndpointOutput> => {
   try {
     const res = await post('channels/latest', q);
     return res;
