@@ -20,17 +20,17 @@
     <Player videoId={video.id} videoTitle={video.title} />
   {/each}
 {:else}
-  <div class="grid grid-cols-4 gap-4 content-center h-screen">
-    <div class="p-4">
+  <div class="grid grid-cols-4 gap-4 content-center h-screen px-[10%]">
+    <div class="p-2">
       <CategorySection channels={TECH_CHANNELS} category="tech" />
     </div>
-    <div class="p-4">
+    <div class="p-2">
       <CategorySection channels={TECH_CHANNELS} category="podcast" />
     </div>
-    <div class="p-4">
+    <div class="p-2">
       <CategorySection channels={TECH_CHANNELS} category="science" />
     </div>
-    <div class="p-4">
+    <div class="p-2">
       <CategorySection channels={TECH_CHANNELS} category="music" />
     </div>
   </div>
