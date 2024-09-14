@@ -91,7 +91,7 @@
   </div>
   <div class="flex">
     <div class="flex-1">
-      <button class="btn btn-neutral" on:click={togglePlayPause}>
+      <button class="btn btn-sm btn-neutral" on:click={togglePlayPause}>
         {playing ? "Pause" : "Play"}
       </button>
     </div>

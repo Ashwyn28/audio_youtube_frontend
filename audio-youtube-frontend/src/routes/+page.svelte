@@ -7,18 +7,33 @@
   // @ts-ignore
   $: searchVideos = $videoStore.search;
 
+  $: console.log(searchVideos);
+
   const TECH_CHANNELS = [
-    'UCBJycsmduvYEL83R_U4JriQ',
-    'UCEcrRXW3oEYfUctetZTAWLw'
-  ]
+    "UCBJycsmduvYEL83R_U4JriQ",
+    "UCEcrRXW3oEYfUctetZTAWLw",
+  ];
 </script>
 
-<CategorySection channels={TECH_CHANNELS} category="tech" />
-
-{#if searchVideos}
+{#if searchVideos.length > 0}
   {#each searchVideos as video}
     <Player videoId={video.id} videoTitle={video.title} />
   {/each}
+{:else}
+  <div class="grid grid-cols-4 gap-4 content-center h-screen">
+    <div class="p-4">
+      <CategorySection channels={TECH_CHANNELS} category="tech" />
+    </div>
+    <div class="p-4">
+      <CategorySection channels={TECH_CHANNELS} category="podcast" />
+    </div>
+    <div class="p-4">
+      <CategorySection channels={TECH_CHANNELS} category="science" />
+    </div>
+    <div class="p-4">
+      <CategorySection channels={TECH_CHANNELS} category="music" />
+    </div>
+  </div>
 {/if}
 
 <SearchBar />

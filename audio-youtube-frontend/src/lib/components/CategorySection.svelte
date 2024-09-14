@@ -5,27 +5,16 @@
   export let channels;
   export let category;
 
-  // $: videos = $videoStore.tech;
+  $: videos = $videoStore.tech;
 
-  // videoStore.fetchVideos(channels, category);
-  let videos = [
-    {
-      id: "8Ip8VOuI5Ho",
-      title: "test 1",
-    },
-    {
-      id: "8IaBF-5T-6U",
-      title: "test 2",
-    },
-    {
-      id: "WKhZQwWz6wU",
-      title: "test 3",
-    },
-  ];
+  videoStore.fetchVideos(channels, category);
 </script>
 
 {#if videos.length === 0}
   <p>Loading...</p>
 {:else}
-  <CategoryCard {videos} />
+  <div class="p-4 border-solid border rounded-xl">
+    <div class="text-lg font-bold py-4 capitalize">{category}</div>
+    <CategoryCard {videos} />
+  </div>
 {/if}
