@@ -15,39 +15,19 @@
     "UCEcrRXW3oEYfUctetZTAWLw",
   ];
 
-  const categories = [
-    "test 1",
-    "test 2",
-    "test 1",
-    "test 2",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 1",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
-    "test 2",
+  const channels = [
+    {
+      name: "channel 1",
+      id: "UCBJycsmduvYEL83R_U4JriQ"
+    },
+    {
+      name: "channel 2",
+      id: "UCEcrRXW3oEYfUctetZTAWLw"
+    },
   ]
 </script>
 
-<CategoryCarousel {categories} />
+<CategoryCarousel {channels} />
 
 {#if searchVideos.length > 0}
   {#each searchVideos as video}
@@ -59,16 +39,16 @@
   {/each}
 {:else}
   <div class="grid grid-cols-4 gap-4 content-center pt-[15%]">
-    <div class="p-2">
+    <div>
       <CategorySection channels={TECH_CHANNELS} category="tech" />
     </div>
-    <div class="p-2">
+    <div>
       <CategorySection channels={TECH_CHANNELS} category="podcast" />
     </div>
-    <div class="p-2">
+    <div>
       <CategorySection channels={TECH_CHANNELS} category="science" />
     </div>
-    <div class="p-2">
+    <div>
       <CategorySection channels={TECH_CHANNELS} category="music" />
     </div>
   </div>
