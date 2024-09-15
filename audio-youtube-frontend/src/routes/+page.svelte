@@ -7,6 +7,7 @@
 
   // @ts-ignore
   $: searchVideos = $videoStore.search;
+  $: channelVideos = $videoStore.channelLatest;
 
 
   const TECH_CHANNELS = [
@@ -50,6 +51,10 @@
 
 {#if searchVideos.length > 0}
   {#each searchVideos as video}
+    <Player videoId={video.id} videoTitle={video.title} />
+  {/each}
+{:else if channelVideos.length > 0}
+  {#each channelVideos as video}
     <Player videoId={video.id} videoTitle={video.title} />
   {/each}
 {:else}

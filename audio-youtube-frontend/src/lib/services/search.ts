@@ -54,3 +54,12 @@ export const searchChannelsLatest = async (q: string[]): Promise<EndpointOutput>
     console.log(error)
   }
 }
+
+export const searchChannelLatest = async (q: string): Promise<EndpointOutput> => {
+  try {
+    const res = await get(`channel/latest?channel_id=${q}`)
+    return res;
+  } catch (error) {
+    console.log(error)
+  }
+}

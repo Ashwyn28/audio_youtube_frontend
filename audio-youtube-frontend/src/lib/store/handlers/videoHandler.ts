@@ -1,5 +1,5 @@
 import type { Writable } from 'svelte/store';
-import { search, searchChannelsLatest } from '$lib/services/search';
+import { search, searchChannelsLatest, searchChannelLatest } from '$lib/services/search';
 import type { Video, Category } from '$lib/types';
 
 export class VideoHandler {
@@ -30,7 +30,14 @@ export class VideoHandler {
   }
 
   async searchChannel(channel: string): Promise<void> {
-    const res: Video[] = await search(query);
+    const res: Video[] = await searchChannelLatest(channel);
+    if (res) {
+      this.update((state) => {
+        state.channelLatest = res;
+        return state;
+      });
+    }
+
   }
 
   clearVideos(category: Category): void {

@@ -7,6 +7,7 @@ export function createVideoStore(withPersistentStorage: boolean) {
   const initialState = localStorage.getStorage() || {
     tech: [],
     search: [],
+    channelLatest: [],
   };
 
   const { subscribe, set, update } = writable(initialState);
