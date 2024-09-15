@@ -1,33 +1,20 @@
-<script>
+<script lang="ts">
   import Player from "$lib/components/Player.svelte";
   import SearchBar from "$lib/components/SearchBar.svelte";
   import CategorySection from "$lib/components/CategorySection.svelte";
   import CategoryCarousel from "$lib/components/CategoryCarousel.svelte";
   import { videoStore } from "$lib/store";
+  import { data } from "$lib/data";
+  import type { Video } from "$lib/types";
 
-  // @ts-ignore
+  let searchVideos: Video[];
+  let channelVideos: Video[];
+
   $: searchVideos = $videoStore.search;
   $: channelVideos = $videoStore.channelLatest;
-
-
-  const TECH_CHANNELS = [
-    "UCBJycsmduvYEL83R_U4JriQ",
-    "UCEcrRXW3oEYfUctetZTAWLw",
-  ];
-
-  const channels = [
-    {
-      name: "channel 1",
-      id: "UCBJycsmduvYEL83R_U4JriQ"
-    },
-    {
-      name: "channel 2",
-      id: "UCEcrRXW3oEYfUctetZTAWLw"
-    },
-  ]
 </script>
 
-<CategoryCarousel {channels} />
+<CategoryCarousel channels={data.channels} />
 
 {#if searchVideos.length > 0}
   {#each searchVideos as video}
@@ -40,16 +27,16 @@
 {:else}
   <div class="grid grid-cols-4 gap-4 content-center pt-[15%]">
     <div>
-      <CategorySection channels={TECH_CHANNELS} category="tech" />
+      <CategorySection channels={data.TECH_CHANNELS} category="tech" />
     </div>
     <div>
-      <CategorySection channels={TECH_CHANNELS} category="podcast" />
+      <CategorySection channels={data.TECH_CHANNELS} category="podcast" />
     </div>
     <div>
-      <CategorySection channels={TECH_CHANNELS} category="science" />
+      <CategorySection channels={data.TECH_CHANNELS} category="science" />
     </div>
     <div>
-      <CategorySection channels={TECH_CHANNELS} category="music" />
+      <CategorySection channels={data.TECH_CHANNELS} category="music" />
     </div>
   </div>
 {/if}
