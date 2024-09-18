@@ -6,6 +6,9 @@ export function createVideoStore(withPersistentStorage: boolean) {
   const localStorage = new LocalStorageManager("videos");
   const initialState = localStorage.getStorage() || {
     tech: [],
+    podcast: [],
+    science: [],
+    music: [],
     search: [],
     channelLatest: [],
   };

@@ -25,18 +25,18 @@
     <Player videoId={video.id} videoTitle={video.title} />
   {/each}
 {:else}
-  <div class="grid grid-cols-4 gap-4 content-center pt-[15%]">
+  <div class="grid grid-cols-4 gap-2 content-center pt-[15%]">
     <div>
       <CategorySection channels={data.TECH_CHANNELS} category="tech" />
     </div>
     <div>
-      <CategorySection channels={data.TECH_CHANNELS} category="podcast" />
+      <CategorySection channels={data.PODCAST_CHANNELS} category="podcast" />
     </div>
     <div>
-      <CategorySection channels={data.TECH_CHANNELS} category="science" />
+      <CategorySection channels={data.SCIENCE_CHANNELS} category="science" />
     </div>
     <div>
-      <CategorySection channels={data.TECH_CHANNELS} category="music" />
+      <CategorySection channels={data.MUSIC_CHANNELS} category="music" />
     </div>
   </div>
 {/if}

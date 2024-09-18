@@ -5,7 +5,7 @@
   export let channels;
   export let category;
 
-  $: videos = $videoStore.tech;
+  $: videos = $videoStore[category] || []; 
 
   videoStore.searchChannels(channels, category);
 </script>

@@ -2,6 +2,6 @@
   import "../app.css";
 </script>
 
-<div class="relative min-h-screen px-[10%]">
+<div class="relative min-h-screen px-[5%]">
   <slot />
 </div>
