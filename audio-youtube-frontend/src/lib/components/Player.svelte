@@ -83,6 +83,15 @@
       playing = true;
     }
   }
+  
+  function handleSeekTo(event: any): void {
+    console.log(event);
+    if (!player) return;
+    const progressBar = event.target;
+    const newTime = (event.offsetX / progressBar.offsetWidth) * duration;
+    player.seekTo(newTime, true);
+  }
+
 </script>
 
 <div class="pb-4">
@@ -101,6 +110,7 @@
   </div>
   <progress
     class="progress w-full"
+    on:click={handleSeekTo}
     value={duration > 0 ? (currentTime / duration) * 100 : 0}
     max="100"
   ></progress>

@@ -1,6 +1,6 @@
 const TECH_CHANNELS = ["UCBJycsmduvYEL83R_U4JriQ", "UCEcrRXW3oEYfUctetZTAWLw"];
 const MUSIC_CHANNELS = ["UCnxQ8o9RpqxGF2oLHcCn9VQ", "UCt7fwAhXDy3oNFTAzF2o8Pw"]
-const SCIENCE_CHANNELS = ["UCuCkxoKLYO_EQ2GeFtbM_bw", "UCZ4AMrDcNrfy3X6nsU8-rPg", "UCGaVdbSav8xWuFWTadK6loA"]
+const SCIENCE_CHANNELS = ["UCuCkxoKLYO_EQ2GeFtbM_bw", "UCZ4AMrDcNrfy3X6nsU8-rPg"]
 const PODCAST_CHANNELS = ["UCSHZKyawb77ixDdsGog4iWA"]
 
 const channels = [
