@@ -6,12 +6,14 @@
   export let videoTitle = "";
 
   let player: YT.Player;
-  let playerElementId = "youtube-player-" + Math.random().toString(36).substr(2, 9);
+  let playerElementId =
+    "youtube-player-" + Math.random().toString(36).substr(2, 9);
   let playerReady = false;
   let playing = false;
   let updateTimer: number;
   $: currentTime = 0;
   $: duration = 0;
+  let durationCheckTimer: number;
 
   declare global {
     interface Window {
@@ -30,6 +32,7 @@
 
     return () => {
       clearInterval(updateTimer);
+      clearInterval(durationCheckTimer);
       if (player) {
         player.destroy();
       }
@@ -49,26 +52,29 @@
 
   function onPlayerReady(event: YT.PlayerEvent): void {
     playerReady = true;
-    updateProgress();
   }
 
   $: if (playerReady && videoId) {
     player.cueVideoById(videoId);
+    currentTime = 0;
+    duration = 0;
+    startDurationCheck();
   }
 
   function onPlayerStateChange(event: YT.OnStateChangeEvent): void {
-    if (event.data == window.YT.PlayerState.PLAYING) {
+    if (event.data === window.YT.PlayerState.PLAYING) {
+      clearInterval(updateTimer);
       updateTimer = setInterval(updateProgress, 1000);
+      playing = true;
     } else {
       clearInterval(updateTimer);
+      playing = false;
     }
-    playing = event.data == window.YT.PlayerState.PLAYING;
   }
 
   function updateProgress(): void {
     if (!player) return;
     currentTime = player.getCurrentTime();
-    duration = player.getDuration();
   }
 
   function formatTime(time: number): string {
@@ -94,6 +100,17 @@
     const progressBar = event.target;
     const newTime = (event.offsetX / progressBar.offsetWidth) * duration;
     player.seekTo(newTime, true);
+  }
+
+  function startDurationCheck(): void {
+    clearInterval(durationCheckTimer);
+    durationCheckTimer = setInterval(() => {
+      const newDuration = player.getDuration();
+      if (newDuration && newDuration > 0) {
+        duration = newDuration;
+        clearInterval(durationCheckTimer);
+      }
+    }, 500);
   }
 </script>
 
