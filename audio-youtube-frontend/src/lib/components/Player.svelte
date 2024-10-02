@@ -6,12 +6,12 @@
   export let videoTitle = "";
 
   let player: YT.Player;
-  let playerElementId =
-    "youtube-player-" + Math.random().toString(36).substr(2, 9);
+  let playerElementId = "youtube-player-" + Math.random().toString(36).substr(2, 9);
+  let playerReady = false;
   let playing = false;
   let updateTimer: number;
-  let currentTime = 0;
-  let duration = 0;
+  $: currentTime = 0;
+  $: duration = 0;
 
   declare global {
     interface Window {
@@ -48,7 +48,12 @@
   }
 
   function onPlayerReady(event: YT.PlayerEvent): void {
+    playerReady = true;
     updateProgress();
+  }
+
+  $: if (playerReady && videoId) {
+    player.cueVideoById(videoId);
   }
 
   function onPlayerStateChange(event: YT.OnStateChangeEvent): void {
@@ -74,7 +79,7 @@
   }
 
   function togglePlayPause(): void {
-    if (!player) return;
+    if (!player || !playerReady) return;
     if (playing) {
       player.pauseVideo();
       playing = false;
@@ -83,15 +88,13 @@
       playing = true;
     }
   }
-  
+
   function handleSeekTo(event: any): void {
-    console.log(event);
-    if (!player) return;
+    if (!player || !playerReady) return;
     const progressBar = event.target;
     const newTime = (event.offsetX / progressBar.offsetWidth) * duration;
     player.seekTo(newTime, true);
   }
-
 </script>
 
 <div class="pb-4">

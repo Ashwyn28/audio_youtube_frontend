@@ -25,7 +25,7 @@
     <Player videoId={video.id} videoTitle={video.title} />
   {/each}
 {:else}
-  <div class="grid grid-cols-4 gap-2 content-center pt-[15%]">
+  <div class="grid grid-cols-4 gap-2 content-center pt-[5%]">
     <div>
       <CategorySection channels={data.TECH_CHANNELS} category="tech" />
     </div>
