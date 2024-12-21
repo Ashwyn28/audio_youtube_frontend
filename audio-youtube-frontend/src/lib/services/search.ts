@@ -1,6 +1,6 @@
 import type { EndpointOutput } from "@sveltejs/kit";
 
-const BASE = "https://ioos6b24n1.execute-api.us-east-1.amazonaws.com";
+const BASE = "http://0.0.0.0:8000";
 
 export const get = async (resource: string): Promise<EndpointOutput> => {
   try {
@@ -39,7 +39,7 @@ export const post = async (
 
 export const search = async (q: string): Promise<EndpointOutput> => {
   try {
-    const res = await get(`search?query=${q}`);
+    const res = await get(`videoes/search?query=${q}`);
     return res;
   } catch (error) {
     console.log(error);
@@ -57,7 +57,16 @@ export const searchChannelsLatest = async (q: string[]): Promise<EndpointOutput>
 
 export const searchChannelLatest = async (q: string): Promise<EndpointOutput> => {
   try {
-    const res = await get(`channel/latest?channel_id=${q}`)
+    const res = await get(`channels/${q}/latest`)
+    return res;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const addChannel = async (q: string): Promise<EndpointOutput> => {
+  try {
+    const res = await get(`channels/search?query=${q}`)
     return res;
   } catch (error) {
     console.log(error)

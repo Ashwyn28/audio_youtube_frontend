@@ -25,3 +25,13 @@ export const data = {
     MUSIC_CHANNELS,
     channels
 }
+
+export const initialState = {
+  tech: [],
+  podcast: [],
+  science: [],
+  music: [],
+  search: [],
+  channelLatest: [],
+  channels: [],
+}
