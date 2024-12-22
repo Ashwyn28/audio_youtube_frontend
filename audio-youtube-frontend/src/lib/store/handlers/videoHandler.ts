@@ -15,21 +15,21 @@ export class VideoHandler {
   }
 
   async searchChannels(channels: string[], category: string): Promise<void> {
-    // const res: Video[] = await searchChannelsLatest(channels);
-    const res = [
-      {
-        id: "8Ip8VOuI5Ho",
-        title: "test 1",
-      },
-      {
-        id: "8IaBF-5T-6U",
-        title: "test 2",
-      },
-      {
-        id: "WKhZQwWz6wU",
-        title: "test 3",
-      },
-    ];
+    const res: Video[] = await searchChannelsLatest(channels);
+    // const res = [
+    //   {
+    //     id: "8Ip8VOuI5Ho",
+    //     title: "test 1",
+    //   },
+    //   {
+    //     id: "8IaBF-5T-6U",
+    //     title: "test 2",
+    //   },
+    //   {
+    //     id: "WKhZQwWz6wU",
+    //     title: "test 3",
+    //   },
+    // ];
     if (res) {
       this.update((state) => {
         state[category] = res;
