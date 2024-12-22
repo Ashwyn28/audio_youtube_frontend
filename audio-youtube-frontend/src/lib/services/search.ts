@@ -1,6 +1,6 @@
 import type { EndpointOutput } from "@sveltejs/kit";
 
-const BASE = "http://0.0.0.0:8000";
+const BASE = "https://ioos6b24n1.execute-api.us-east-1.amazonaws.com";
 
 export const get = async (resource: string): Promise<EndpointOutput> => {
   try {
