@@ -1,8 +1,8 @@
 <script lang="ts">
   import Player from "$lib/components/Player.svelte";
   import SearchBar from "$lib/components/SearchBar.svelte";
-  import CategorySection from "$lib/components/CategorySection.svelte";
   import CategoryCarousel from "$lib/components/CategoryCarousel.svelte";
+  import Feed from "$lib/components/Feed.svelte";
   import { videoStore } from "$lib/store";
   import { data } from "$lib/data";
   import type { Video } from "$lib/types";
@@ -26,18 +26,7 @@
   {/each}
 {:else}
   <div class="grid md:grid-cols-4 grid-cols-1 gap-2 content-center pt-[5%]">
-    <div>
-      <CategorySection channels={data.TECH_CHANNELS} category="tech" />
-    </div>
-    <div>
-      <CategorySection channels={data.PODCAST_CHANNELS} category="podcast" />
-    </div>
-    <div>
-      <CategorySection channels={data.SCIENCE_CHANNELS} category="science" />
-    </div>
-    <div>
-      <CategorySection channels={data.MUSIC_CHANNELS} category="music" />
-    </div>
+    <Feed channels={data.FEED_CHANNELS} />
   </div>
 {/if}
 
