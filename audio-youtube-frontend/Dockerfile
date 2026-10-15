@@ -1,23 +1,15 @@
-# Use the official Node.js image as a base
-FROM node:18-slim
-
-# Set the working directory inside the container
+FROM node:22-slim AS base
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code to the container
+COPY package.json package-lock.json .npmrc ./
+RUN npm ci
 COPY . .
 
-# Build the SvelteKit app (optional: if you're using a static site or need to build before serving)
-RUN npm run build
-
-# Expose the port that the app will run on
+FROM base AS dev
 EXPOSE 3000
+CMD ["npm", "run", "dev"]
 
-# Start the SvelteKit app
-CMD ["npm", "run", "preview"]
+FROM base AS preview
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "3000"]

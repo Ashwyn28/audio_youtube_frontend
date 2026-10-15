@@ -18,11 +18,6 @@
 
   let showSearch = false;
 
-  // $: if (newChannels) {
-  //   for(let i = 0; i < newChannels.length; i++) {
-  //     channels.push(newChannels[i])
-  //   }
-  // }
 </script>
 
 <div class="overscroll-x overflow-x-auto py-8">
