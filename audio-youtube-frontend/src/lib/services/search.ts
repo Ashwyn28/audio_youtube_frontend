@@ -1,8 +1,11 @@
-import type { EndpointOutput } from "@sveltejs/kit";
+import { env } from "$env/dynamic/public";
+import type { Video } from "$lib/types";
 
-const BASE = "https://ioos6b24n1.execute-api.us-east-1.amazonaws.com";
+type Channel = { id: string; name: string };
 
-export const get = async (resource: string): Promise<EndpointOutput> => {
+const BASE = (env.PUBLIC_API_BASE_URL || "https://ioos6b24n1.execute-api.us-east-1.amazonaws.com").replace(/\/+$/, "");
+
+export const get = async <T>(resource: string): Promise<T | undefined> => {
   try {
     const res = await fetch(`${BASE}/${resource}`, {
       headers: {
@@ -17,10 +20,10 @@ export const get = async (resource: string): Promise<EndpointOutput> => {
   }
 };
 
-export const post = async (
+export const post = async <T>(
   resource: string,
-  data: any
-): Promise<EndpointOutput> => {
+  data: unknown
+): Promise<T | undefined> => {
   try {
     const res = await fetch(`${BASE}/${resource}`, {
       method: "POST",
@@ -37,36 +40,36 @@ export const post = async (
   }
 };
 
-export const search = async (q: string): Promise<EndpointOutput> => {
+export const search = async (q: string): Promise<Video[] | undefined> => {
   try {
-    const res = await get(`videoes/search?query=${q}`);
+    const res = await get<Video[]>(`videos/search?query=${encodeURIComponent(q)}`);
     return res;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const searchChannelsLatest = async (q: string[]): Promise<EndpointOutput> => {
+export const searchChannelsLatest = async (q: string[]): Promise<Video[] | undefined> => {
   try {
-    const res = await post('channels/latest', q);
+    const res = await post<Video[]>('channels/latest', q);
     return res;
   } catch (error) {
     console.log(error)
   }
 }
 
-export const searchChannelLatest = async (q: string): Promise<EndpointOutput> => {
+export const searchChannelLatest = async (q: string): Promise<Video[] | undefined> => {
   try {
-    const res = await get(`channels/${q}/latest`)
+    const res = await get<Video[]>(`channels/${encodeURIComponent(q)}/latest`)
     return res;
   } catch (error) {
     console.log(error)
   }
 }
 
-export const addChannel = async (q: string): Promise<EndpointOutput> => {
+export const addChannel = async (q: string): Promise<Channel | undefined> => {
   try {
-    const res = await get(`channels/search?query=${q}`)
+    const res = await get<Channel>(`channels/search?query=${encodeURIComponent(q)}`)
     return res;
   } catch (error) {
     console.log(error)

@@ -5,7 +5,7 @@ import {
   searchChannelLatest,
   addChannel,  
 } from "$lib/services/search";
-import type { Video, Category } from "$lib/types";
+import type { Category } from "$lib/types";
 
 export class VideoHandler {
   private update: Writable<any>["update"];
@@ -15,33 +15,7 @@ export class VideoHandler {
   }
 
   async searchChannels(channels: string[], category: string): Promise<void> {
-    const res: Video[] = await searchChannelsLatest(channels);
-    // const res = [
-    //   {
-    //     id: "8Ip8VOuI5Ho",
-    //     title: "test 1",
-    //   },
-    //   {
-    //     id: "8IaBF-5T-6U",
-    //     title: "test 2",
-    //   },
-    //   {
-    //     id: "WKhZQwWz6wU",
-    //     title: "test 3",
-    //   },
-    //   {
-    //     id: "8Ip8VOuI5Ho",
-    //     title: "test 1",
-    //   },
-    //   {
-    //     id: "8IaBF-5T-6U",
-    //     title: "test 2",
-    //   },
-    //   {
-    //     id: "WKhZQwWz6wU",
-    //     title: "test 3",
-    //   },
-    // ];
+    const res = await searchChannelsLatest(channels);
     if (res) {
       this.update((state) => {
         state[category] = res;
@@ -51,7 +25,7 @@ export class VideoHandler {
   }
 
   async searchVideos(query: string): Promise<void> {
-    const res: Video[] = await search(query);
+    const res = await search(query);
     if (res) {
       this.update((state) => {
         state.search = res;
@@ -61,7 +35,7 @@ export class VideoHandler {
   }
 
   async searchChannel(channel: string): Promise<void> {
-    const res: Video[] = await searchChannelLatest(channel);
+    const res = await searchChannelLatest(channel);
     if (res) {
       this.update((state) => {
         state.channelLatest = res;
