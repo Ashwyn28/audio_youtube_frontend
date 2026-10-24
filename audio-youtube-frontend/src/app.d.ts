@@ -7,6 +7,7 @@ interface YouTubePlayer {
   getCurrentTime(): number;
   getDuration(): number;
   setVolume(volume: number): void;
+  setPlaybackRate(rate: number): void;
   destroy(): void;
 }
 interface Window {

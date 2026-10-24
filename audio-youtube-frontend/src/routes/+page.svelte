@@ -1,9 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { videoStore, playbackStatus } from "$lib/store";
-  import { searchChannels, resolveLink } from "$lib/services/search";
+  import { searchChannels, resolveLink, audioStreamingEnabled } from "$lib/services/search";
   import type { Channel } from "$lib/types";
   import AudioPlayback from "$lib/components/AudioPlayback.svelte";
+  import YouTubePlayback from "$lib/components/YouTubePlayback.svelte";
   import VideoList from "$lib/components/VideoList.svelte";
   import BrandMark from "$lib/components/BrandMark.svelte";
 
@@ -20,6 +21,7 @@
   let channelController: AbortController | null = null;
   let importInput: HTMLInputElement;
   let sleepChoice = "off";
+  let playbackMode: "" | "audio" | "youtube" = "";
   $: current = $videoStore.queue[$videoStore.currentIndex];
   $: upcoming = $videoStore.queue.slice($videoStore.currentIndex + 1);
   $: historyVideos = [...$videoStore.history].sort((a, b) => b.updatedAt - a.updatedAt).map((entry) => entry.video);
@@ -31,6 +33,7 @@
   }
 
   onMount(() => {
+    void audioStreamingEnabled().then(enabled => { playbackMode = enabled ? "audio" : "youtube"; });
     videoStore.hydrate();
     void videoStore.showFeed();
     return () => channelController?.abort();
@@ -200,7 +203,7 @@
     {#if current && $playbackStatus.error && !visibleVideos.some(video => video.id === current.id)}
       <p class="error-box" role="alert">{current.title}: {$playbackStatus.error} <button class="text-button" on:click={() => videoStore.retryPlayback()}>Retry playback</button></p>
     {/if}
-    <AudioPlayback />
+    {#if playbackMode === "audio"}<AudioPlayback />{:else if playbackMode === "youtube"}<YouTubePlayback />{/if}
   </main>
 
   <form class="search-form" role="search" on:submit|preventDefault={submitSearch}>

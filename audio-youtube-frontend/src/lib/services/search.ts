@@ -73,3 +73,13 @@ export function resolveLink(url: string, signal?: AbortSignal) {
 export function audioUrl(id: string) {
   return `${base}/audio/${encodeURIComponent(id)}`;
 }
+
+// True when the API can stream audio itself; otherwise the app plays via YouTube.
+export async function audioStreamingEnabled(): Promise<boolean> {
+  try {
+    const status = await request<{ enabled?: boolean }>("audio/status");
+    return status.enabled === true;
+  } catch {
+    return false;
+  }
+}
