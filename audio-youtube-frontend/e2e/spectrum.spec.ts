@@ -49,6 +49,7 @@ async function setup(page: Page, unsupported = false) {
   await page.route(apiPattern, async route => {
     const headers = { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET,POST,OPTIONS', 'access-control-allow-headers': '*' };
     if (route.request().method() === 'OPTIONS') { await route.fulfill({ status: 204, headers }); return; }
+    if (new URL(route.request().url()).pathname === '/audio/status') { await route.fulfill({ headers, json: { enabled: true, installed: true, transport: 'native-audio' } }); return; }
     if (!new URL(route.request().url()).pathname.startsWith('/audio/')) {
       await route.fulfill({ headers, json: [first, second] }); return;
     }

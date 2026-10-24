@@ -28,6 +28,7 @@ async function mockAPI(page: Page, failFirstFeed = false) {
     const url = new URL(route.request().url());
     const headers = { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET,POST,OPTIONS', 'access-control-allow-headers': '*' };
     if (route.request().method() === 'OPTIONS') { await route.fulfill({ status: 204, headers }); return; }
+    if (new URL(route.request().url()).pathname === '/audio/status') { await route.fulfill({ headers, json: { enabled: true, installed: true, transport: 'native-audio' } }); return; }
     if (url.pathname.startsWith('/audio/')) {
       const range = route.request().headers().range?.match(/^bytes=(\d+)-(\d*)$/);
       const start = range ? Math.min(Number(range[1]), wav.length - 1) : 0;

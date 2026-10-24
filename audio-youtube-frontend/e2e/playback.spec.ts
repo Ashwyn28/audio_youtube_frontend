@@ -27,6 +27,7 @@ async function setup(page: Page, options: { autoplay?: boolean; failFirstAudio?:
     const url = new URL(route.request().url());
     const headers = { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET,POST,OPTIONS', 'access-control-allow-headers': '*' };
     if (route.request().method() === 'OPTIONS') { await route.fulfill({ status: 204, headers }); return; }
+    if (new URL(route.request().url()).pathname === '/audio/status') { await route.fulfill({ headers, json: { enabled: true, installed: true, transport: 'native-audio' } }); return; }
     if (!url.pathname.startsWith('/audio/')) { await route.fulfill({ headers, json: [first, second] }); return; }
     audioRequests.push(url.pathname);
     if (options.failFirstAudio && ++attempts === 1) { await route.fulfill({ status: 503, headers, body: 'temporarily unavailable' }); return; }
@@ -162,4 +163,20 @@ test('a browser autoplay rejection can recover from an explicit Play action', as
   await playbackButton(page).click();
   await playing(page);
   await expect(card(page).getByRole('alert')).toHaveCount(0);
+});
+
+test('falls back to the YouTube player when API audio streaming is disabled', async ({ page }) => {
+  let youtubeRequested = false;
+  await page.route('https://www.youtube.com/iframe_api', route => { youtubeRequested = true; return route.abort(); });
+  await page.route(apiPattern, async route => {
+    const headers = { 'access-control-allow-origin': '*' };
+    const { pathname } = new URL(route.request().url());
+    if (pathname === '/audio/status') { await route.fulfill({ headers, json: { enabled: false, installed: true, transport: 'native-audio' } }); return; }
+    if (pathname.startsWith('/audio/')) { await route.fulfill({ status: 503, headers }); return; }
+    await route.fulfill({ headers, json: [first, second] });
+  });
+  await page.goto('/');
+  await expect(page.locator('.youtube-host')).toHaveCount(1);
+  await expect(page.locator('audio')).toHaveCount(0);
+  await expect.poll(() => youtubeRequested).toBe(true);
 });
