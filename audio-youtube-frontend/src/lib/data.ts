@@ -1,47 +1,31 @@
-const TECH_CHANNELS = ["UCBJycsmduvYEL83R_U4JriQ", "UCEcrRXW3oEYfUctetZTAWLw"];
-const MUSIC_CHANNELS = ["UCnxQ8o9RpqxGF2oLHcCn9VQ", "UCt7fwAhXDy3oNFTAzF2o8Pw"]
-const SCIENCE_CHANNELS = ["UCuCkxoKLYO_EQ2GeFtbM_bw", "UCZ4AMrDcNrfy3X6nsU8-rPg"]
-const PODCAST_CHANNELS = ["UCSHZKyawb77ixDdsGog4iWA"]
-const FEED_CHANNELS = [
-  "UCBJycsmduvYEL83R_U4JriQ", 
-  "UCEcrRXW3oEYfUctetZTAWLw",
-  "UCnxQ8o9RpqxGF2oLHcCn9VQ", 
-  "UCt7fwAhXDy3oNFTAzF2o8Pw",
-  "UCuCkxoKLYO_EQ2GeFtbM_bw", 
-  "UCZ4AMrDcNrfy3X6nsU8-rPg",
-  "UCSHZKyawb77ixDdsGog4iWA",
-]
-
-const channels = [
-  {
-    name: "MKBHD",
-    id: "UCBJycsmduvYEL83R_U4JriQ",
-  },
-  {
-    name: "WAVEFORM PDCST",
-    id: "UCEcrRXW3oEYfUctetZTAWLw",
-  },
-  {
-    name: "LEX FRIDMAN PDCST", 
-    id:"UCSHZKyawb77ixDdsGog4iWA" 
-  }
+import type { Channel } from "./types";
+export const defaultChannels: Channel[] = [
+  { name: "The PrimeTime", id: "UCUyeluBRhGPCW4rPe_UvBZQ" },
+  { name: "vlogbrothers", id: "UCGaVdbSav8xWuFWTadK6loA" },
+  { name: "Wendover Productions", id: "UC9RM-iSvTu1uPJb8X5yp3EQ" },
+  { name: "Big A", id: "UCdBXOyqr8cDshsp7kcKDAkg" },
+  { name: "Man Carrying Thing", id: "UCPdaxSov0mgwh77JvjQO2jQ" },
 ];
 
-export const data = {
-    TECH_CHANNELS,
-    PODCAST_CHANNELS,
-    SCIENCE_CHANNELS,
-    MUSIC_CHANNELS,
-    FEED_CHANNELS,
-    channels
-}
+export const defaultsRevision = "youtube-history-2026-10-24";
+const starterIds = new Set([
+  "UCBJycsmduvYEL83R_U4JriQ",
+  "UCEcrRXW3oEYfUctetZTAWLw",
+  "UCSHZKyawb77ixDdsGog4iWA",
+]);
 
-export const initialState = {
-  tech: [],
-  podcast: [],
-  science: [],
-  music: [],
-  search: [],
-  channelLatest: [],
-  channels: [],
+export function migrateStarterChannels(channels: Channel[]): Channel[] {
+  // A missing starter channel means the user already customized the initial set.
+  if (![...starterIds].every(id => channels.some(channel => channel.id === id))) return channels;
+  const custom = channels.filter(channel => !starterIds.has(channel.id));
+  const customIds = new Set(custom.map(channel => channel.id));
+  let slots = Math.max(0, 30 - custom.length);
+  const defaults = defaultChannels.filter(channel => {
+    if (customIds.has(channel.id)) return true;
+    if (!slots) return false;
+    slots--;
+    return true;
+  });
+  const selectedIds = new Set(defaults.map(channel => channel.id));
+  return [...defaults, ...custom.filter(channel => !selectedIds.has(channel.id))];
 }

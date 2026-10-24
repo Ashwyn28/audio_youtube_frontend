@@ -8,3 +8,6 @@ build
 .env.*
 npm-debug.log*
 .DS_Store
+test-results
+test-results-playback
+playwright-report
