@@ -205,4 +205,3 @@
   on:timeupdate={tick} on:ended={ended} on:error={failed} on:pause={paused}
   on:playing={() => { buffering = false; error = ""; analysis?.setActive($videoStore.playing && !audio.paused); if (!$videoStore.playing) audio.pause(); }}
   on:waiting={() => { buffering = true; analysis?.setActive(false); }} on:canplay={() => buffering = false} />
-
