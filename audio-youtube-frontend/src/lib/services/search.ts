@@ -1,77 +1,85 @@
 import { env } from "$env/dynamic/public";
-import type { Video } from "$lib/types";
+import type { Channel, Video, VideoPage } from "$lib/types";
 
-type Channel = { id: string; name: string };
-
-const BASE = (env.PUBLIC_API_BASE_URL || "https://ioos6b24n1.execute-api.us-east-1.amazonaws.com").replace(/\/+$/, "");
-
-export const get = async <T>(resource: string): Promise<T | undefined> => {
+const base = (
+  env.PUBLIC_API_BASE_URL ||
+  "http://localhost:8000"
+).replace(/\/+$/, "");
+async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  let response: Response;
   try {
-    const res = await fetch(`${BASE}/${resource}`, {
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    if (res.ok) {
-      return res.json();
-    }
+    response = await fetch(`${base}/${path}`, options);
   } catch (error) {
-    console.log(error);
+    if (error instanceof Error && error.name === "AbortError") throw error;
+    throw new Error(
+      "Could not reach AudioTube. Check your connection and try again.",
+    );
   }
-};
-
-export const post = async <T>(
-  resource: string,
-  data: unknown
-): Promise<T | undefined> => {
-  try {
-    const res = await fetch(`${BASE}/${resource}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      return res.json();
-    }
-  } catch (error) {
-    console.log(error);
+  if (!response.ok) {
+    if (response.status === 404)
+      throw new Error("No matching channel or video found. Try another name or link.");
+    if (response.status === 403 || response.status === 429)
+      throw new Error("YouTube is limiting requests. Please try again later.");
+    throw new Error("Could not load results. Please try again.");
   }
-};
-
-export const search = async (q: string): Promise<Video[] | undefined> => {
-  try {
-    const res = await get<Video[]>(`videos/search?query=${encodeURIComponent(q)}`);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const searchChannelsLatest = async (q: string[]): Promise<Video[] | undefined> => {
-  try {
-    const res = await post<Video[]>('channels/latest', q);
-    return res;
-  } catch (error) {
-    console.log(error)
-  }
+  return response.json();
+}
+export function search(query: string, pageToken = "", signal?: AbortSignal) {
+  return request<VideoPage>(
+    `videos/search?${new URLSearchParams({ query, paginated: "true", ...(pageToken ? { page_token: pageToken } : {}) })}`,
+    { signal },
+  );
+}
+export function channelLatest(
+  id: string,
+  pageToken = "",
+  signal?: AbortSignal,
+) {
+  return request<VideoPage>(
+    `channels/${encodeURIComponent(id)}/latest?${new URLSearchParams({ paginated: "true", ...(pageToken ? { page_token: pageToken } : {}) })}`,
+    { signal },
+  );
+}
+export function feed(ids: string[], signal?: AbortSignal) {
+  return request<Video[]>("channels/latest", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(ids),
+    signal,
+  });
+}
+export function findChannel(query: string) {
+  return request<Channel>(`channels/search?${new URLSearchParams({ query })}`);
 }
 
-export const searchChannelLatest = async (q: string): Promise<Video[] | undefined> => {
-  try {
-    const res = await get<Video[]>(`channels/${encodeURIComponent(q)}/latest`)
-    return res;
-  } catch (error) {
-    console.log(error)
-  }
+export async function searchChannels(query: string, signal?: AbortSignal) {
+  const page = await request<{ items: Channel[]; nextPageToken: string | null }>(
+    `channels/search?${new URLSearchParams({ query, paginated: "true" })}`,
+    { signal },
+  );
+  return page.items;
 }
 
-export const addChannel = async (q: string): Promise<Channel | undefined> => {
+export interface ResolvedLink {
+  type: "video" | "channel";
+  video?: Video;
+  channel?: Channel;
+}
+
+export function resolveLink(url: string, signal?: AbortSignal) {
+  return request<ResolvedLink>(`resolve?${new URLSearchParams({ url })}`, { signal });
+}
+
+export function audioUrl(id: string) {
+  return `${base}/audio/${encodeURIComponent(id)}`;
+}
+
+// True when the API can stream audio itself; otherwise the app plays via YouTube.
+export async function audioStreamingEnabled(): Promise<boolean> {
   try {
-    const res = await get<Channel>(`channels/search?query=${encodeURIComponent(q)}`)
-    return res;
-  } catch (error) {
-    console.log(error)
+    const status = await request<{ enabled?: boolean }>("audio/status");
+    return status.enabled === true;
+  } catch {
+    return false;
   }
 }
